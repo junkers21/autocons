@@ -65,13 +65,13 @@ void setup()
   Serial.begin(9600);                 // 1 Création du port série pour que l'arduino puisse envoyer des infos vers l'ordinateur
 
   emon1.voltage(0, 357, 1.7);         // 1 Initialisation du Voltage (Pin A2, Valeur à changer pour etalonnage (+/-357 pour 6v et +/- 190 pour 12v))
-  emon1.current(1, 14.3);             // 1 Initialisation du Courant en ampère ( Pin A1, Valeur à changer lors de l'etalonnage)
+  emon1.current(1, 5.2);             // 1 Initialisation du Courant en ampère ( Pin A1, Valeur à changer lors de l'etalonnage)
   
   emon2.voltage(0, 357, 1.7);         // 4 Initialisation du Voltage (Pin A2, Valeur à changer pour etalonnage, phase_shift)
-  emon2.current(2, 14.3);             // 4 Initialisation du Courant en ampère ( Pin A3, Valeur à changer lors de l'etalonnage)
+  emon2.current(2, 5.2);             // 4 Initialisation du Courant en ampère ( Pin A3, Valeur à changer lors de l'etalonnage)
   
   emon3.voltage(0, 357, 1.7);         // 4 Initialisation du Voltage (Pin A2, Valeur à changer pour etalonnage, phase_shift)
-  emon3.current(3, 28.5);             // 4 Initialisation du Courant en ampère ( Pin A6, Valeur à changer lors de l'etalonnage)
+  emon3.current(3, 32);             // 4 Initialisation du Courant en ampère ( Pin A6, Valeur à changer lors de l'etalonnage)
 
   lcd.begin(16, 2);                         // 2 initialisation de l'afficheur LCD 
 
