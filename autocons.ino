@@ -14,7 +14,9 @@ EnergyMonitor emon2;             // 4 Idem que dessus pour une deuxième pince a
 EnergyMonitor emon3;             // 4 Idem que dessus pour une troisième pince amperemetrique
 
 #include <Wire.h>                        // 2 inclure la librairie "wire.h" (si elle n'existe pas dans la bibliothèque, faire comme expliqué pour EmonLib.h
-#include <LiquidCrystal.h>           // 2 inclure la librairie "LiquidCrystal_I2C.h" 
+#include <LiquidCrystal_I2C.h>           // 2 inclure la librairie "LiquidCrystal_I2C.h" 
+//LiquidCrystal_I2C lcd(0x27, 16, 4);    // 2 définir l'adresse de l'écran LCD, le nombre de caractères et le nombre de lignes
+LiquidCrystal_I2C lcd(0x3f,16,2);        // 2 Si Le LCD ne fonctionne pas, alors mettre // sur la ligne précédente et enlever les // sur cette ligne
 
 //#include <DallasTemperature.h>           // 7 librairie de la sonde Dallas
 //#include <OneWire.h>                     // 7 librairie qui va gérer les différente adresses des sondes de température
@@ -53,11 +55,7 @@ unsigned long previous_millis = 0;   // 2 création de la variable "previous_mil
 //DallasTemperature sensor(&ONE_WIRE_BUS);   // 7 utilisation du bus OneWire
 //DeviceAddress sensor1DeviceAddress;        // 7 déclaration de "sensor1DeviceAddress" comme adresse de la sonde 1
 
-// initialize the library by associating any needed LCD interface pin
-// with the arduino pin number it is connected to
-const int rs = 2, en = 3, d4 = 4, d5 = 5, d6 = 6, d7 = 7;
-LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
-int contrast = 125 ;
+
 //-----------------------INITIALISATION DU PROGRAMME-------------------------------------------------
 
 void setup()
@@ -73,9 +71,8 @@ void setup()
   emon3.voltage(0, 357, 1.7);         // 4 Initialisation du Voltage (Pin A2, Valeur à changer pour etalonnage, phase_shift)
   emon3.current(3, 32);             // 4 Initialisation du Courant en ampère ( Pin A6, Valeur à changer lors de l'etalonnage)
 
-  lcd.begin(16, 2);                         // 2 initialisation de l'afficheur LCD 
+  lcd.init();                         // 2 initialisation de l'afficheur LCD 
 
-analogWrite(11,contrast);
  //myservo.attach(5);                 // 3 On attache l'objet servo à la Pin D5 
  pinMode(led, OUTPUT);                // 6 La broche sur lequel est la variable led est une sortie 
 
