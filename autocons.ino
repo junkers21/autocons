@@ -27,6 +27,8 @@ LiquidCrystal_I2C lcd(0x27,16,2);        // 2 Si Le LCD ne fonctionne pas, alors
 const int led = 10;                       // 6  valeur finale auquel la led va s'allumer  de 0(éteint) à 250 (allumé à fond)
 int intensite_led = 0;                   // 6  Variable intermédiaire  de l'intensité de la led
 
+float VOLT_CALIB = 425;
+
 float w_instantane_in = 0;            // 2 Creation de la variable flottante "puissance instantanée" qui rentre (en watt) initialisée à la valeur 0
 float kwh_cumule_in=0;                // 2' Création de la variable flottante correspondant au Kilo Watt heure "consommé" cumulés initialisé à 0
 
@@ -62,13 +64,13 @@ void setup()
 {
   Serial.begin(9600);                 // 1 Création du port série pour que l'arduino puisse envoyer des infos vers l'ordinateur
 
-  emon1.voltage(0, 107, 1.7);         // 1 Initialisation du Voltage (Pin A2, Valeur à changer pour etalonnage (+/-357 pour 6v et +/- 190 pour 12v))
+  emon1.voltage(0, VOLT_CALIB, 1.7);         // 1 Initialisation du Voltage (Pin A2, Valeur à changer pour etalonnage (+/-357 pour 6v et +/- 190 pour 12v))
   emon1.current(3, 50);             // 1 Initialisation du Courant en ampère ( Pin A1, Valeur à changer lors de l'etalonnage)
   
-  emon2.voltage(0, 107, 1.7);         // 4 Initialisation du Voltage (Pin A2, Valeur à changer pour etalonnage, phase_shift)
+  emon2.voltage(0, VOLT_CALIB, 1.7);         // 4 Initialisation du Voltage (Pin A2, Valeur à changer pour etalonnage, phase_shift)
   emon2.current(1, 7.5);             // 4 Initialisation du Courant en ampère ( Pin A3, Valeur à changer lors de l'etalonnage)
   
-  emon3.voltage(0, 107, 1.7);         // 4 Initialisation du Voltage (Pin A2, Valeur à changer pour etalonnage, phase_shift)
+  emon3.voltage(0, VOLT_CALIB, 1.7);         // 4 Initialisation du Voltage (Pin A2, Valeur à changer pour etalonnage, phase_shift)
   emon3.current(2, 7.5);             // 4 Initialisation du Courant en ampère ( Pin A6, Valeur à changer lors de l'etalonnage)
 
   lcd.init();                         // 2 initialisation de l'afficheur LCD 
@@ -107,7 +109,7 @@ void loop()
 
  //--------------------------Etalonnage des volts et ampères sans LCD--------------------------------------
 
-  /*Serial.print("Est-ce le bon voltage? ");      // 1 envoyer vers l'ordinateur le texte " Est-ce le bon voltage? "
+  Serial.print("Est-ce le bon voltage? ");      // 1 envoyer vers l'ordinateur le texte " Est-ce le bon voltage? "
   Serial.print(verif_voltage);                  // 1 envoyer vers l'ordinateur la valeur "verif_voltage (Vrms)"
   Serial.print(" -A1:  ");                         // 1 envoyer vers l'ordinateur le caractère "V"
   Serial.print(verif_ampere1);                   
@@ -119,8 +121,8 @@ void loop()
   Serial.print(Cos_phi);                   
   Serial.print("cos ");
   Serial.print("Puissence reele 1: ");      // 1 envoyer vers l'ordinateur le texte " Est-ce le bon voltage? "
-  Serial.print(puissance_reelle1);
-  Serial.print(" Raw lecture: ");      // 1 envoyer vers l'ordinateur le texte " Est-ce le bon voltage? "*/
+  Serial.println(puissance_reelle1);
+  //Serial.print(" Raw lecture: ");      // 1 envoyer vers l'ordinateur le texte " Est-ce le bon voltage? "
   // Serial.println(analogRead(3));  
      
  //----------------POUR AVOIR LES W, Wh et kWh de l'élélectricité qui rentre et de l'électricité qui sort de ma maison------------------
@@ -209,6 +211,7 @@ void loop()
   
   // --------------------ECRIRE SUR LCD ET POUR CHANGER LES VALEUR DuLCD AVEC UN BOUTON POUSSOIR------------------------------------------------
 
+lcd.clear();
   
  impulsion = digitalRead(pin_bouton_changer_ecran);                //5 Demande à "impulsion" de prendre la valeur de "pin_bouton_changer_ecran"
   if (impulsion == 0) compteur_impulsion = compteur_impulsion + 1; //5 On incrémente le compteur d'impulsion s'il y a une impulsion sur le bouton
